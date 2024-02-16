@@ -17,7 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Adiciona uma rota estática para servir os arquivos na pasta 'bibs'
+# Add a static route to serve the files in the folder 'bibs'
 app.mount("/bibs", StaticFiles(directory="bibs", html=False), name="bibs")
 
 @app.post("/upload")
@@ -36,6 +36,6 @@ async def upload_files(files: List[UploadFile] = File(...)):
 
 @app.get("/download")
 async def download_ref_bib():
-    # Retorna o conteúdo do arquivo 'ref.bib'
+    # Returns the content of the file 'ref.bib'
     file_path = os.path.join(os.getcwd(), 'bibs', 'ref.bib')
     return FileResponse(file_path, filename='ref.bib', media_type='application/x-bibtex')
