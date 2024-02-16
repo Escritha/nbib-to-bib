@@ -11,6 +11,7 @@ cd nbib-to-bib
 #### 2ª Creating virtual environment and installing packages
 ```bash
 python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 #### 3ª Running the api
