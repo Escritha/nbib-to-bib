@@ -31,7 +31,7 @@ Receives as a parameter one or several files with the .nbib extension and conver
 
 `/download`
 
-Rescue the converted .bieber content
+Rescue the converted .bib content
 
 ## License
 
