@@ -2,11 +2,19 @@ import os
 from time import time
 import urllib.request as req
 from urllib.error import HTTPError
+from datetime import datetime
 
 class NbibToBibConverter:
     def __init__(self, directory):
         self.directory = directory
         self.bibs_folder = os.path.join(self.directory, 'bibs')
+    
+    def get_latest_file(self):
+        files = [f for f in os.listdir(self.bibs_folder) if f.endswith(".bib")]
+        if not files:
+            return None
+        latest_file = max(files, key=lambda x: os.path.getmtime(os.path.join(self.bibs_folder, x)))
+        return os.path.join(self.bibs_folder, latest_file)
 
     def create_bibs_folder(self):
         '''Creates a new directory within the current directory called bibs'''
@@ -38,12 +46,15 @@ class NbibToBibConverter:
         try:
             print("Starting conversion...")
 
-            with open(os.path.join(self.bibs_folder, 'ref.bib'), 'a') as output:
+            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+            new_file_path = os.path.join(self.bibs_folder, f'ref_{timestamp}.bib')
+
+            with open(new_file_path, 'w') as output:
                 doi = self.read_doi(content)
 
                 if doi == "":
                     print("Can't find DOI in the provided content.")
-                    return
+                    return ""
 
                 try:
                     bib = self.bib_from_doi(doi)
@@ -59,5 +70,8 @@ class NbibToBibConverter:
             elapsed = process_end - process_start
             print(f"Processing time: {elapsed}")
             print("Conversion finished.")
+
+            return new_file_path  # Retorna o caminho do novo arquivo
         except Exception as e:
             print(e)
+            return ""

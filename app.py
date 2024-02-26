@@ -4,6 +4,7 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi import Query
 
 from conversion import NbibToBibConverter
 
@@ -36,9 +37,13 @@ async def upload_files(files: List[UploadFile] = File(...)):
 
 @app.get("/download")
 async def download_ref_bib():
-    # Returns the content of the file 'ref.bib'
-    file_path = os.path.join(os.getcwd(), 'bibs', 'ref.bib')
-    return FileResponse(file_path, filename='ref.bib', media_type='application/x-bibtex')
+    converter = NbibToBibConverter(os.getcwd())
+    latest_file = converter.get_latest_file()
+        
+    if latest_file:
+        return FileResponse(latest_file, media_type='application/x-bibtex')
+    else:
+        return {"error": "No bib files found"}
 
 @app.get("/")
 async def getHello():
