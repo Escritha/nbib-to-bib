@@ -39,3 +39,7 @@ async def download_ref_bib():
     # Returns the content of the file 'ref.bib'
     file_path = os.path.join(os.getcwd(), 'bibs', 'ref.bib')
     return FileResponse(file_path, filename='ref.bib', media_type='application/x-bibtex')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
