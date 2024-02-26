@@ -14,7 +14,6 @@ class NbibToBibConverter:
             os.makedirs(self.bibs_folder)
 
     def read_doi(self, content):
-        # Alteração: Agora a função recebe o conteúdo diretamente
         for line in content.decode().splitlines():
             string = "doi"
             if string in line:
